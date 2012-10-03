@@ -1,0 +1,6 @@
+TODO LIST
+
+1) --WHERE  clause missing predicates 
+2) --FROM   clause accepts only one table
+3) --SELECT clause retrieve rows from one table
+4) field Memo is not allowed
