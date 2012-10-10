@@ -1,0 +1,43 @@
+# ignore objects and archives, anywhere in the tree
+*.[oa]
+*~
+
+# autoconf and automake
+config.h
+config.log
+config.status
+Makefile
+libtool
+stamp-h1
+
+# tarball and distro
+dbf2txt-0.1.tar.gz
+
+# common
+common/.deps/
+common/.libs/
+common/Makefile
+common/*.lo
+common/*.la
+
+# lib
+lib/.deps/
+lib/.libs/
+lib/Makefile
+lib/*.lo
+lib/*.la
+
+# plugin
+plugin/Makefile
+plugin/*/.deps/
+plugin/*/.libs/
+plugin/*/Makefile
+plugin/*/*.la
+plugin/*/*.lo
+
+# src
+src/.deps/
+src/.libs/
+src/Makefile
+src/dbf2txt
+
