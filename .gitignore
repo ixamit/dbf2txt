@@ -2,13 +2,14 @@
 *.[oa]
 *~
 
-# autoconf and automake
+# autoconf , automake and libtool stuff
 config.h
 config.log
 config.status
 Makefile
 libtool
 stamp-h1
+autom4te.cache/
 
 # tarball and distro
 dbf2txt-0.1.tar.gz
