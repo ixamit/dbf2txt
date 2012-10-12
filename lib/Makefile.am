@@ -12,7 +12,7 @@ libdbf2txt_la_SOURCES = \
    order.h order.c \
    dbf2txt.h dbf2txt.c \
    plugin.h plugin.c \
-   dump_ASCII.c 
+   dump_ASCII.h dump_ASCII.c 
 
 libdbf2txt_la_LIBADD = \
    ../common/libcommon.la -ldl
