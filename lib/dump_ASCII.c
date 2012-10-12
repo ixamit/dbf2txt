@@ -82,7 +82,7 @@ void dbf_dump_ASCII_TAIL (DBF *dbf)
 {
   dbf_dump_ASCII_HEADandTAIL (dbf,1);
 }
-void dbf_dump_ASCII_BODY (DBF *dbf,int RecNumber)
+void dbf_dump_ASCII_BODY (DBF *dbf, ui32 RecNumber)
 {
   int k,i,j;
   ui32 position;
