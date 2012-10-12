@@ -31,17 +31,18 @@
 #include "select.h"
 #include "order.h"
 #include "plugin.h"
+#include "dump_ASCII.h"
 
 int main (int argc, char **argv)
 {
   DBF *dbf=NULL;
   int err=0;
-  char *options_line=NULL,*xdump=NULL;
-  char *arch;
-
+  char *options_line=NULL,*xdump=NULL, *arch;
+  void (*HEAD) (struct dbf *)=dbf_dump_ASCII_HEAD;
+  void (*BODY) (struct dbf *, ui32)=dbf_dump_ASCII_BODY;
+  void (*TAIL) (struct dbf *)=dbf_dump_ASCII_TAIL;
   LIST_PLUGIN *plugin_head=NULL, *plugin;
-  load_all_plugins (&plugin_head);
- 
+   
   if (opt_init (argc,argv,&options_line)>0)
   {
     // the main option parser 
@@ -59,20 +60,20 @@ int main (int argc, char **argv)
   ///////////////////////////////////////////////
   // xdump Setting 
   //
-  void dbf_dump_ASCII_HEAD (DBF *);
-  void dbf_dump_ASCII_TAIL (DBF *);
-  void dbf_dump_ASCII_BODY (DBF *, ui32);
 	
-  void *HEAD=dbf_dump_ASCII_HEAD;
-  void *BODY=dbf_dump_ASCII_BODY;
-  void *TAIL=dbf_dump_ASCII_TAIL;
   if (!err) 
   {
 	if ((xdump=opt_get("xdump")))
 	{
+		load_all_plugins (&plugin_head);
+
 		if (!xstrcmpi(xdump,"HELP"))
 		{
 			show_plugin_list (plugin_head);
+
+			free_all_plugins (plugin_head);
+
+			opt_free ();
 			return 0;
 		}
 		if ((plugin=search_plugin (plugin_head, xdump))==NULL)
@@ -90,7 +91,7 @@ int main (int argc, char **argv)
   }
   ///////////////////////////////////////////////
   
-  if (opt_get_argc())
+  if (!err && opt_get_argc())
   {
     fprintf (stderr,"Error: `%s` invalid parameters. (I think you be mistaken with option)\n",opt_get_argv(0));
     err=-1;
@@ -142,7 +143,8 @@ int main (int argc, char **argv)
     // 
     dbf_show_records (dbf);
     //
-  
+ 
+  free_all_plugins (plugin_head); 
   dbf_end (dbf);
   opt_free ();
   
