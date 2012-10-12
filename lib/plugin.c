@@ -95,7 +95,7 @@ int load_plugin (LIST_PLUGIN **head, const char *lib)
 	if ((pathname=xmalloc (len))==NULL)
 		return -1;
 
-	snprintf (pathname,len,"%s/%s",LIBDIR, lib);
+	snprintf (pathname,len,"%s/%s",LIBDIR, lib); 
 	handle = dlopen (pathname, RTLD_LAZY);
 	free (pathname);
 	if (!handle)
@@ -107,7 +107,6 @@ int load_plugin (LIST_PLUGIN **head, const char *lib)
 	dlerror(); // Clear any existing error 
 
 	*(void **) (&check_init) = dlsym(handle, "plugin_init");
-
 	if ((error = dlerror()) != NULL)  
 	{
 		//fprintf(stderr, "%s\n", error);
@@ -116,7 +115,6 @@ int load_plugin (LIST_PLUGIN **head, const char *lib)
 	}
 	
 	(*check_init)(&plugin);
-
 	if (!plugin.name)
 	{
 		fprintf (stderr,"Warning Plugin `%s`: no name definition\n", lib);
@@ -142,6 +140,7 @@ int load_plugin (LIST_PLUGIN **head, const char *lib)
 	if ((plugin.HEAD=dlsym(handle, func_name))==NULL)
 	{
 		fprintf (stderr,"Warning Plugin `%s`: `%s` not found\n", lib,func_name );
+		free (func_name);
         dlclose(handle);
         return -1;
 	}
@@ -149,18 +148,19 @@ int load_plugin (LIST_PLUGIN **head, const char *lib)
 	if ((plugin.BODY=dlsym(handle, func_name))==NULL)
 	{
 		fprintf (stderr,"Warning Plugin `%s`: `%s` not found\n", lib,func_name );
+		free (func_name);
         dlclose(handle);
         return -1;
 	}
-
 	sprintf (func_name,"%s_%s",plugin.name,"TAIL");
 	if ((plugin.TAIL=dlsym(handle, func_name))==NULL)
 	{
 		fprintf (stderr,"Warning Plugin `%s`: `%s` not found\n", lib,func_name );
+		free (func_name);
         dlclose(handle);
         return -1;
 	}
-	
+    free (func_name);	
 	plugin.handle=handle;
 	push_plugin (head, &plugin);
 
@@ -179,6 +179,9 @@ int filter (const struct dirent *file)
 		return 0;
 	// skip if not shared lib
     if (strcmp(est+1,"so"))
+		return 0;
+	// skip owner shared lib
+	if (!strcmp(file->d_name,"libdbf2txt.so"))
 		return 0;
 	
 	return 1;
