@@ -116,24 +116,26 @@ void XML_HEAD (DBF *dbf)
 void XML_BODY (DBF *dbf,ui32 RecNumber)
 {
   int i,k;
-  char *TABLE=dbf->database;
-  //char *ENGINE="MyISAM";
-  //char *CHARSET="utf8";
-  //char *COLLATE="COLLATE=utf8_unicode_ci";
+  //char *TABLE=dbf->database;
+  ui32 position;
+  ui16 len;
   
-  printf ("<?xml version=\"1.0\"?>\n");
-  printf ("<%s xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n",PACKAGE);
-  printf ("  <database name=\"%s\">\n","dummy");
-  printf ("    <table_structure name=\"%s\">\n",TABLE);
-    
   // Fields loop
+  printf ("      <row>\n");
   for (k=0;k<dbf->nselect;k++)
   {
     i=dbf->select[k];
-    printf ("      <field Field=\"%s\" Type=\"%s\" />\n",dbf->sub_header[i]->FieldName,XMLType(dbf->sub_header[i]));
+    memcpy (&position,dbf->sub_header[i]->DisplacementOfFieldInRecord,sizeof(position));
+
+	len=LengthOfField(dbf->sub_header[i]);
+
+    memcpy (dbf->tmp_sub_record,dbf->record+position,len);
+    dbf->tmp_sub_record[len]=0;
+	alltrim (dbf->tmp_sub_record);
+    // FIXME TODO purify ** Security Warning **
+    printf ("        <field name=\"%s\">%s</field>\n",dbf->sub_header[i]->FieldName,dbf->tmp_sub_record);
   }
-  printf ("    </table_structure>\n");
-  printf ("    <table_data name=\"%s\">\n",TABLE);
+  printf ("      </row>\n");
   //
 }
 
