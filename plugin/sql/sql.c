@@ -142,7 +142,7 @@ void SQL_TAIL (DBF *dbf)
   printf ("UNLOCK TABLES;\n\n");
 }
 
-void SQL_BODY (DBF *dbf,int RecNumber)
+void SQL_BODY (DBF *dbf,ui32 RecNumber)
 {
   int k,i;
   ui32 position;

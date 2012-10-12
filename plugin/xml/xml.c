@@ -113,7 +113,7 @@ void XML_HEAD (DBF *dbf)
   //
 }
 
-void XML_BODY (DBF *dbf,int RecNumber)
+void XML_BODY (DBF *dbf,ui32 RecNumber)
 {
   int i,k;
   char *TABLE=dbf->database;

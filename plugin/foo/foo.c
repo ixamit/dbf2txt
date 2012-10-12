@@ -60,7 +60,7 @@ void FOO_TAIL (DBF *dbf)
   printf ("Foo Tail\n");
 }
 
-void FOO_BODY (DBF *dbf,int RecNumber)
+void FOO_BODY (DBF *dbf,ui31 RecNumber)
 {
   printf ("Foo Body - RecNumber %d\n",RecNumber);
 }
