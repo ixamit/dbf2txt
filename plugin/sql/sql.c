@@ -20,27 +20,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Module SQL ver 0.1
-// 
-//
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-#include "config.h"
-#include "mem.h"
-#include "util.h"
-#include "opt.h"
-#include "dbf.h"
-#include "dbf2txt.h"
-#include "select.h"
-#include "order.h"	
-
-#include "plugin.h"
-
+#include "xdump.h"
 #define DEBUG 1
 
 int plugin_init (PLUGIN *foo)
