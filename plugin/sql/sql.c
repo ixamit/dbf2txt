@@ -37,133 +37,129 @@ int plugin_init (PLUGIN *foo)
 
 char * SQLType (DBF_SUBHEADER *sub_header)
 {
-  static char SQLType[64];
-  int l=LengthOfField(sub_header);
-  int d=NumberOfDecimalPlaces(sub_header);
-  switch (sub_header->FieldType)
-  {
-    case 'N':
-      if (d)
-        sprintf (SQLType,"decimal(%d,%d)",l,d);
-      else if (l<5)
-        sprintf (SQLType,"smallint(%d)",l);
-      else if (l<3)
-        sprintf (SQLType,"tinyint(%d)",l);
-      else
-        sprintf (SQLType,"int(%d)",l);
-      break;
-    case 'C':
-      if (l<=255)
-        sprintf (SQLType,"varchar(%d) COLLATE utf8_unicode_ci",l);
-      else
-        sprintf (SQLType,"text(%d)",l);
-      break;
-    case 'D':
-      sprintf (SQLType,"date");
-      break;
-  }
-  return SQLType;
+	static char SQLType[64];
+	int l=LengthOfField(sub_header);
+	int d=NumberOfDecimalPlaces(sub_header);
+	switch (sub_header->FieldType)
+	{
+		case 'N':
+			if (d)
+				sprintf (SQLType,"decimal(%d,%d)",l,d);
+			else if (l<5)
+				sprintf (SQLType,"smallint(%d)",l);
+			else if (l<3)
+				sprintf (SQLType,"tinyint(%d)",l);
+			else
+				sprintf (SQLType,"int(%d)",l);
+			break;
+		case 'C':
+			if (l<=255)
+				sprintf (SQLType,"varchar(%d) COLLATE utf8_unicode_ci",l);
+			else
+				sprintf (SQLType,"text(%d)",l);
+			break;
+		case 'D':
+			sprintf (SQLType,"date");
+			break;
+		default:
+			sprintf (SQLType,"unknow");
+			break;
+	}
+	return SQLType;
 }
+
 void purify (char *s)
 {
-  char *p;
-  while ((p=strchr(s,'"')))
-  {
-    *p='\'';
-  }
+	char *p;
+	while ((p=strchr(s,'"')))
+	{
+		*p='\'';
+	}
 }
 
 void SQL_HEAD (DBF *dbf)
 {
-  int i,k;
-  char *TABLE=dbf->database;
-  char *ENGINE="MyISAM";
-  char *CHARSET="utf8";
-  char *COLLATE="COLLATE=utf8_unicode_ci";
+	int i,k;
+	char *TABLE=DBNAME;
+	char *ENGINE="MyISAM";
+	char *CHARSET="utf8";
+	char *COLLATE="COLLATE=utf8_unicode_ci";
     
-  printf ("-- SQL dump created by %s version %s\n",PACKAGE,PACKAGE_VERSION);
-  printf ("-- please report bugs at %s\n",PACKAGE_BUGREPORT);
-  printf ("--\n");
-  printf ("-- ----------------------------------------\n");
-  printf ("\n");
-    
-  printf ("--\n");
-  printf ("-- Table structure for table `%s`\n",TABLE);
-  printf ("--\n\n");
-  printf ("DROP TABLE IF EXISTS `%s`;\n",TABLE);
-  printf ("CREATE TABLE `%s` (\n",TABLE);
-  // Fields loop
-  for (k=0;k<dbf->nselect;k++)
-  {
-    i=dbf->select[k];
-    printf ("  `%s` %s",dbf->sub_header[i]->FieldName,SQLType(dbf->sub_header[i]));
-    if (k<dbf->nselect-1)
-      printf (",");
-    printf ("\n");
-  }
-  // Key Loop
-  printf ("\n");
-  printf ("  /* Modify and or/Add KEYS */\n");
-  printf ("  # PRIMARY KEY (`%s`)\n",dbf->sub_header[0]->FieldName);
-    
-  printf (") ENGINE=%s DEFAULT CHARSET=%s %s;\n\n",ENGINE,CHARSET,COLLATE);
-    
-  printf ("--\n");
-  printf ("-- Dumping data from table `%s`\n",TABLE);
-  printf ("--\n\n");
-  printf ("LOCK TABLES `%s` WRITE;\n",TABLE);
-  printf ("INSERT INTO `%s` VALUES ",TABLE);
-  #if DEBUG    
-    printf ("\n");
-  #endif    
-  
-  //
+	printf ("-- SQL dump created by %s version %s\n",PACKAGE,PACKAGE_VERSION);
+	printf ("-- please report bugs at %s\n",PACKAGE_BUGREPORT);
+	printf ("--\n");
+	printf ("-- ----------------------------------------\n");
+	printf ("\n");
+	printf ("--\n");
+	printf ("-- Table structure for table `%s`\n",TABLE);
+	printf ("--\n\n");
+	printf ("DROP TABLE IF EXISTS `%s`;\n",TABLE);
+	printf ("CREATE TABLE `%s` (\n",TABLE);
+	// Fields loop
+	for (k=0;k<dbf->nselect;k++)
+	{
+    	i=dbf->select[k];
+		printf ("  `%s` %s",dbf->sub_header[i]->FieldName,SQLType(dbf->sub_header[i]));
+		if (k<dbf->nselect-1)
+			printf (",");
+		printf ("\n");
+	}
+	// 
+	printf ("\n");
+	printf ("  /* Modify and or/Add KEYS */\n");
+	printf ("  # PRIMARY KEY (`%s`)\n",dbf->sub_header[0]->FieldName);
+	printf (") ENGINE=%s DEFAULT CHARSET=%s %s;\n\n",ENGINE,CHARSET,COLLATE);
+	printf ("--\n");
+	printf ("-- Dumping data from table `%s`\n",TABLE);
+	printf ("--\n\n");
+	printf ("LOCK TABLES `%s` WRITE;\n",TABLE);
+	printf ("INSERT INTO `%s` VALUES ",TABLE);
+	#if DEBUG    
+    	printf ("\n");
+	#endif    
 }
 
 void SQL_TAIL (DBF *dbf)
 {
-  printf ("UNLOCK TABLES;\n\n");
+	printf ("UNLOCK TABLES;\n\n");
 }
 
 void SQL_BODY (DBF *dbf,ui32 RecNumber)
 {
-  int k,i;
-  ui32 position;
-  ui16 len;
+	int k,i;
+	ui32 position;
+	ui16 len;
 
-  printf ("("); // DEBUG \n
-
-  for (k=0;k<dbf->nselect;k++)
-  {
-    i=dbf->select[k];
-    memcpy (&position,dbf->sub_header[i]->DisplacementOfFieldInRecord,sizeof(position));
+	printf ("("); 
+	for (k=0;k<dbf->nselect;k++)
+	{
+		i=dbf->select[k];
+		memcpy (&position,dbf->sub_header[i]->DisplacementOfFieldInRecord,sizeof(position));
     
-    len=LengthOfField(dbf->sub_header[i]);
+		len=LengthOfField(dbf->sub_header[i]);
     
-    memcpy (dbf->tmp_sub_record,dbf->record+position,len); dbf->tmp_sub_record[len]=0; 
-    alltrim (dbf->tmp_sub_record);
+		memcpy (dbf->tmp_sub_record,dbf->record+position,len); dbf->tmp_sub_record[len]=0; 
+		alltrim (dbf->tmp_sub_record);
     
-
-    if (_dbf_isnumeric(dbf->sub_header[i]))
-      printf ("%s",(*dbf->tmp_sub_record)?dbf->tmp_sub_record:"0");
-    else
-    {
-      purify (dbf->tmp_sub_record);
-      printf ("\"%s\"",dbf->tmp_sub_record); // FIXME Security
-    }
-    if (k<dbf->nselect-1)
-      printf (",");
-      
-  } 
-  printf (")");
-  if (RecNumber<dbf->NumberOfRecords)
-  {
-    printf (","); 
-    #if DEBUG    
-      printf ("\n"); 
-    #endif
-  }
-  else
-    printf (";\n");
+		if (_dbf_isnumeric(dbf->sub_header[i]))
+			printf ("%s",(*dbf->tmp_sub_record)?dbf->tmp_sub_record:"0");
+		else
+		{
+			purify (dbf->tmp_sub_record);
+			printf ("\"%s\"",dbf->tmp_sub_record); // FIXME Security
+		}
+		if (k<dbf->nselect-1)
+			printf (",");
+	} 
+	printf (")");
+	if (RecNumber<dbf->NumberOfRecords)
+	{
+		printf (","); 
+		#if DEBUG    
+			printf ("\n"); 
+		#endif
+	}
+	else
+		printf (";\n");
 }
 

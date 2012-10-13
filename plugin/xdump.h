@@ -37,6 +37,7 @@
 #define DBFIELD_NAME(i)                (DBFIELD_HEADER(i)->FieldName)
 #define DBFIELD_TYPE(i)                (DBFIELD_HEADER(i)->FieldType)
 #define DBFIELD_LEN(i)                 (LengthOfField(DBFIELD_HEADER((i))))
+#define DBFIELD_DEC(i)                 (NumberOfDecimalPlaces(DBFIELD_HEADER((i))))
 #define DBFIELD_LOAD_CONTENTS(i) \
 	ui32 position; \
 	ui16 len; \

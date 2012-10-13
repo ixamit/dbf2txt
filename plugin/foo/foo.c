@@ -18,28 +18,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Module FOO ver 0.1
-// 
-//
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-#include "config.h"
-#include "mem.h"
-#include "util.h"
-#include "opt.h"
-#include "dbf.h"
-#include "dbf2txt.h"
-#include "select.h"
-#include "order.h"	
-
-#include "plugin.h"
-
-#define DEBUG 1
+#include "xdump.h"
 
 int plugin_init (PLUGIN *foo)
 {
@@ -60,8 +42,8 @@ void FOO_TAIL (DBF *dbf)
   printf ("Foo Tail\n");
 }
 
-void FOO_BODY (DBF *dbf,ui31 RecNumber)
+void FOO_BODY (DBF *dbf,ui32 RecNumber)
 {
-  printf ("Foo Body - RecNumber %d\n",RecNumber);
+  printf ("Foo Body - RecNumber %u\n",RecNumber);
 }
 

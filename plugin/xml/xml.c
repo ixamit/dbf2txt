@@ -19,7 +19,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Module XML ver 0.2
+// Module XML ver 0.1
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -34,53 +34,46 @@ int plugin_init (PLUGIN *xml)
 	return 0;
 }
 
-char * XMLType (DBF_SUBHEADER *sub_header)
-{
-	static char XMLType[64];
-	int l=LengthOfField(sub_header);
-	int d=NumberOfDecimalPlaces(sub_header);
-	switch (sub_header->FieldType)
-	{
-		case 'N':
-      		if (d)
-				sprintf (XMLType,"decimal(%d,%d)",l,d);
-			else if (l<5)
-				sprintf (XMLType,"smallint(%d)",l);
-			else if (l<3)
-				sprintf (XMLType,"tinyint(%d)",l);
-			else
-				sprintf (XMLType,"int(%d)",l);
-			break;
-		case 'C':
-			if (l<=255)
-				sprintf (XMLType,"varchar(%d)",l);
-			else
-				sprintf (XMLType,"text(%d)",l);
-			break;
-		case 'D':
-			sprintf (XMLType,"date");
-			break;
-	}
-	return XMLType;
-}
-
 void XML_HEAD (DBF *dbf)
 {
-	char *TABLE=DBNAME; 
-  
 	printf ("<?xml version=\"1.0\"?>\n");
 	printf ("<%s xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n",PACKAGE);
 	printf ("  <database name=\"%s\">\n","dummy");
-	printf ("    <table_structure name=\"%s\">\n",TABLE);
-    
+	printf ("    <table_structure name=\"%s\">\n",DBNAME);
 	// loop
 	FOREACH_SELECT
 	{
-		printf ("      <field Field=\"%s\" Type=\"%s\" />\n",DBFIELD_NAME(i),XMLType(DBFIELD_HEADER(i)));
+		printf ("      <field Field=\"%s\" Type=\"",DBFIELD_NAME(i));
+		switch (DBFIELD_TYPE(i))
+		{
+			case 'N':
+      			if (DBFIELD_DEC(i))
+					printf ("decimal(%d,%d)",DBFIELD_LEN(i),DBFIELD_DEC(i));
+				else if (DBFIELD_LEN(i)<5)
+					printf ("smallint(%d)",DBFIELD_LEN(i));
+				else if (DBFIELD_LEN(i)<3)
+					printf ("tinyint(%d)",DBFIELD_LEN(i));
+				else
+					printf ("int(%d)",DBFIELD_LEN(i));
+				break;
+			case 'C':
+				if (DBFIELD_LEN(i)<=255)
+					printf ("varchar(%d)",DBFIELD_LEN(i));
+				else
+					printf ("text(%d)",DBFIELD_LEN(i));
+				break;
+			case 'D':
+				printf ("date");
+				break;
+			default:
+				printf ("Unknow");
+				break;
+		}
+		printf ("\" />\n");	
 	}
-	printf ("    </table_structure>\n");
-	printf ("    <table_data name=\"%s\">\n",TABLE);
 	//
+	printf ("    </table_structure>\n");
+	printf ("    <table_data name=\"%s\">\n",DBNAME);
 }
 
 void XML_BODY (DBF *dbf,ui32 RecNumber)
