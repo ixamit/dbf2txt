@@ -38,12 +38,13 @@ void XML_HEAD (DBF *dbf)
 {
 	printf ("<?xml version=\"1.0\"?>\n");
 	printf ("<%s xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n",PACKAGE);
-	printf ("  <database name=\"%s\">\n","dummy");
-	printf ("    <table_structure name=\"%s\">\n",DBNAME);
+	printf ("\t<database name=\"%s\">\n","dummy");
+	printf ("\t\t<table_structure name=\"%s\">\n",DBNAME);
 	// loop
-	FOREACH_SELECT
+	int i;
+	FOREACH_SELECT(i)
 	{
-		printf ("      <field Field=\"%s\" Type=\"",DBFIELD_NAME(i));
+		printf ("\t\t\t<field Field=\"%s\" Type=\"",DBFIELD_NAME(i));
 		switch (DBFIELD_TYPE(i))
 		{
 			case 'N':
@@ -72,27 +73,28 @@ void XML_HEAD (DBF *dbf)
 		printf ("\" />\n");	
 	}
 	//
-	printf ("    </table_structure>\n");
-	printf ("    <table_data name=\"%s\">\n",DBNAME);
+	printf ("\t\t</table_structure>\n");
+	printf ("\t\t<table_data name=\"%s\">\n",DBNAME);
 }
 
 void XML_BODY (DBF *dbf,ui32 RecNumber)
 {
-	printf ("      <row>\n");
+	printf ("\t\t\t<row>\n");
 	// loop
-	FOREACH_SELECT
+	int i;
+	FOREACH_SELECT(i)
 	{
 		DBFIELD_LOAD_CONTENTS(i);
-		printf ("        <field name=\"%s\">%s</field>\n",DBFIELD_NAME(i),DBFIELD_CONTENTS);
+		printf ("\t\t\t\t<field name=\"%s\">%s</field>\n",DBFIELD_NAME(i),DBFIELD_CONTENTS);
 	}
 	//
-	printf ("      </row>\n");
+	printf ("\t\t\t</row>\n");
 }
 
 void XML_TAIL (DBF *dbf)
 {
-	printf ("    </table_data>\n");  
-	printf ("  </database>\n");
+	printf ("\t\t</table_data>\n");  
+	printf ("\t</database>\n");
 	printf ("</%s>\n",PACKAGE);
 }
 

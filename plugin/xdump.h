@@ -41,14 +41,15 @@
 #define DBFIELD_LOAD_CONTENTS(i) \
 	ui32 position; \
 	ui16 len; \
-    memcpy (&position,dbf->sub_header[(i)]->DisplacementOfFieldInRecord,sizeof(position)); \
-    len=LengthOfField(dbf->sub_header[(i)]); \
-    memcpy (dbf->tmp_sub_record,dbf->record+position,len); \
-    dbf->tmp_sub_record[len]=0; \
-    alltrim (dbf->tmp_sub_record); 
+	memcpy (&position,dbf->sub_header[(i)]->DisplacementOfFieldInRecord,sizeof(position)); \
+	len=LengthOfField(dbf->sub_header[(i)]); \
+	memcpy (dbf->tmp_sub_record,dbf->record+position,len); \
+	dbf->tmp_sub_record[len]=0; \
+	alltrim (dbf->tmp_sub_record); 
 #define DBFIELD_CONTENTS               (dbf->tmp_sub_record)
-#define FOREACH_SELECT \
-	int i,k; \
-	for (k=0;k<dbf->nselect && (i=dbf->select[k])>=0;k++)
-
+#define SELECT                         (dbf->select[0])
+#define NSELECT                        (dbf->nselect)
+unsigned int INDEXOF;
+#define FOREACH_SELECT(i) \
+	for (INDEXOF=0;INDEXOF<NSELECT && (i=(SELECT)+INDEXOF)==i;INDEXOF++)
 

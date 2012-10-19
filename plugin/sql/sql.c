@@ -35,12 +35,12 @@ int plugin_init (PLUGIN *foo)
 	return 0;
 }
 
-char * SQLType (DBF_SUBHEADER *sub_header)
+char * SQLType (DBF *dbf, ui32 RecNumber)
 {
 	static char SQLType[64];
-	int l=LengthOfField(sub_header);
-	int d=NumberOfDecimalPlaces(sub_header);
-	switch (sub_header->FieldType)
+	int l=DBFIELD_LEN(RecNumber);
+	int d=DBFIELD_DEC(RecNumber);
+	switch (DBFIELD_TYPE(RecNumber))
 	{
 		case 'N':
 			if (d)
@@ -79,16 +79,15 @@ void purify (char *s)
 
 void SQL_HEAD (DBF *dbf)
 {
-	int i,k;
 	char *TABLE=DBNAME;
 	char *ENGINE="MyISAM";
 	char *CHARSET="utf8";
 	char *COLLATE="COLLATE=utf8_unicode_ci";
-    
+
+    printf ("-- ---------------------------------------------\n");
 	printf ("-- SQL dump created by %s version %s\n",PACKAGE,PACKAGE_VERSION);
 	printf ("-- please report bugs at %s\n",PACKAGE_BUGREPORT);
-	printf ("--\n");
-	printf ("-- ----------------------------------------\n");
+	printf ("-- ---------------------------------------------\n");
 	printf ("\n");
 	printf ("--\n");
 	printf ("-- Table structure for table `%s`\n",TABLE);
@@ -96,18 +95,18 @@ void SQL_HEAD (DBF *dbf)
 	printf ("DROP TABLE IF EXISTS `%s`;\n",TABLE);
 	printf ("CREATE TABLE `%s` (\n",TABLE);
 	// Fields loop
-	for (k=0;k<dbf->nselect;k++)
-	{
-    	i=dbf->select[k];
-		printf ("  `%s` %s",dbf->sub_header[i]->FieldName,SQLType(dbf->sub_header[i]));
-		if (k<dbf->nselect-1)
+	int i;
+	FOREACH_SELECT(i)
+	{		
+		printf ("  `%s` %s",DBFIELD_NAME(i),SQLType(dbf,i));
+		if (INDEXOF+1 < NSELECT)
 			printf (",");
 		printf ("\n");
 	}
 	// 
 	printf ("\n");
 	printf ("  /* Modify and or/Add KEYS */\n");
-	printf ("  # PRIMARY KEY (`%s`)\n",dbf->sub_header[0]->FieldName);
+	printf ("  # PRIMARY KEY (`%s`)\n",DBFIELD_NAME(0));
 	printf (") ENGINE=%s DEFAULT CHARSET=%s %s;\n\n",ENGINE,CHARSET,COLLATE);
 	printf ("--\n");
 	printf ("-- Dumping data from table `%s`\n",TABLE);
@@ -124,31 +123,24 @@ void SQL_TAIL (DBF *dbf)
 	printf ("UNLOCK TABLES;\n\n");
 }
 
-void SQL_BODY (DBF *dbf,ui32 RecNumber)
+void SQL_BODY (DBF *dbf, ui32 RecNumber)
 {
-	int k,i;
-	ui32 position;
-	ui16 len;
 
-	printf ("("); 
-	for (k=0;k<dbf->nselect;k++)
-	{
-		i=dbf->select[k];
-		memcpy (&position,dbf->sub_header[i]->DisplacementOfFieldInRecord,sizeof(position));
+	printf ("(");
+	//
+	int i;
+	FOREACH_SELECT(i)
+	{ 
+		DBFIELD_LOAD_CONTENTS(i);
     
-		len=LengthOfField(dbf->sub_header[i]);
-    
-		memcpy (dbf->tmp_sub_record,dbf->record+position,len); dbf->tmp_sub_record[len]=0; 
-		alltrim (dbf->tmp_sub_record);
-    
-		if (_dbf_isnumeric(dbf->sub_header[i]))
-			printf ("%s",(*dbf->tmp_sub_record)?dbf->tmp_sub_record:"0");
+		if (_dbf_isnumeric(DBFIELD_HEADER(i)))
+			printf ("%s",DBFIELD_CONTENTS);
 		else
 		{
-			purify (dbf->tmp_sub_record);
-			printf ("\"%s\"",dbf->tmp_sub_record); // FIXME Security
+			purify (DBFIELD_CONTENTS);
+			printf ("\"%s\"",DBFIELD_CONTENTS); // FIXME Security
 		}
-		if (k<dbf->nselect-1)
+		if (INDEXOF+1 < NSELECT)
 			printf (",");
 	} 
 	printf (")");

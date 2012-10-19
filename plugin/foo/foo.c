@@ -34,16 +34,16 @@ int plugin_init (PLUGIN *foo)
 
 void FOO_HEAD (DBF *dbf)
 {
-    printf ("Foo Head\n");
+	printf ("Foo Head\n");
 }
 
 void FOO_TAIL (DBF *dbf)
 {
-  printf ("Foo Tail\n");
+	printf ("Foo Tail\n");
 }
 
 void FOO_BODY (DBF *dbf,ui32 RecNumber)
 {
-  printf ("Foo Body - RecNumber %u\n",RecNumber);
+	printf ("Foo Body - RecNumber %u\n",RecNumber);
 }
 
