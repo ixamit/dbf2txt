@@ -33,9 +33,11 @@
 #include "plugin.h"
 
 #define DBNAME                         (dbf->database)
+#define DBNRECORDS                     (dbf->NumberOfRecords)
 #define DBFIELD_HEADER(i)              (dbf->sub_header[(i)])
 #define DBFIELD_NAME(i)                (DBFIELD_HEADER(i)->FieldName)
 #define DBFIELD_TYPE(i)                (DBFIELD_HEADER(i)->FieldType)
+#define DBFIELD_ISNUMERIC(i)           (_dbf_isnumeric(DBFIELD_HEADER(i)))
 #define DBFIELD_LEN(i)                 (LengthOfField(DBFIELD_HEADER((i))))
 #define DBFIELD_DEC(i)                 (NumberOfDecimalPlaces(DBFIELD_HEADER((i))))
 #define DBFIELD_LOAD_CONTENTS(i) \
@@ -47,9 +49,9 @@
 	dbf->tmp_sub_record[len]=0; \
 	alltrim (dbf->tmp_sub_record); 
 #define DBFIELD_CONTENTS               (dbf->tmp_sub_record)
-#define SELECT                         (dbf->select[0])
+//#define SELECT                         (dbf->select[0])
 #define NSELECT                        (dbf->nselect)
 unsigned int INDEXOF;
 #define FOREACH_SELECT(i) \
-	for (INDEXOF=0;INDEXOF<NSELECT && (i=(SELECT)+INDEXOF)==i;INDEXOF++)
+	for (INDEXOF=0;INDEXOF<NSELECT && (i=dbf->select[INDEXOF])==i;INDEXOF++)
 
