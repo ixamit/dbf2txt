@@ -133,7 +133,7 @@ void SQL_BODY (DBF *dbf, ui32 RecNumber)
 	{ 
 		DBFIELD_LOAD_CONTENTS(i);
     
-		if (_dbf_isnumeric(DBFIELD_HEADER(i)))
+		if (DBFIELD_ISNUMERIC(i))
 			printf ("%s",DBFIELD_CONTENTS);
 		else
 		{
@@ -144,7 +144,7 @@ void SQL_BODY (DBF *dbf, ui32 RecNumber)
 			printf (",");
 	} 
 	printf (")");
-	if (RecNumber<dbf->NumberOfRecords)
+	if (RecNumber<DBNRECORDS)
 	{
 		printf (","); 
 		#if DEBUG    
