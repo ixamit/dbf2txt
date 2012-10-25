@@ -23,6 +23,8 @@ common/Makefile
 lib/Makefile
 src/Makefile
 plugin/Makefile
+plugin/csv/Makefile
+plugin/html/Makefile
 plugin/sql/Makefile
 plugin/xml/Makefile
 )

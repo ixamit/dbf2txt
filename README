@@ -16,7 +16,7 @@ $ make install
 /usr/local/lib/dbf2txt/ [shared & dynamic lib]
 
 Learning by samples:
-Follow my examples and try with the estra distribution file TEST.DBF 
+Follow my examples and try with the extra distribution file TEST.DBF 
 
 ======================
 1)See the options help
@@ -154,7 +154,7 @@ Usage: dbf2txt [options]...
 | 66.34 | Nm5B |
 +-------+------+
 
-% dbf2txt --from test.dbf --oder "DES PRZ"
+% dbf2txt --from test.dbf --order "DES PRZ"
 +----+------+-------+
 | ID | DES  | PRZ   |
 +----+------+-------+
@@ -185,6 +185,7 @@ Usage: dbf2txt [options]...
 % dbf2txt --xdump HELP
 Available xdump plugins:
 name:   descriprion: [lib]
+CSV     Comma-Separated Value (CSV)
 SQL     Structured Query Language (SQL)
 XML     Extensible Markup Language (XML)
 
@@ -248,7 +249,8 @@ Enter password:
   (add "plugin/xyz/Makefile" to macro AC_OUTPUT)
 % vi plugin/Makefile.am
   (add xyz to SUBDIRS)
-% cp -R plugin/foo plugin/xyz 
+% cp -R plugin/foo plugin/xyz
+% mv plugin/xyz/foo.c plugin/xyz/xyz.c 
 % vi plugin/xyz/Makefile.am
   (change any foo to xyz)
 % vi plugin/xyz/xyz.c 
