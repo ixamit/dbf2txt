@@ -249,8 +249,7 @@ Writing xyz plugin
     % make 
     $ make install
 
-your plugin "plugin/xyz.c" MUST HAVE:
-* all include and functions as plugin/foo.c
+your plugin "plugin/xyz.c" **MUST HAVE** all include and functions as plugin/foo.c
 	  
     #include "dump.h"
 
