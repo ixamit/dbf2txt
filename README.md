@@ -6,13 +6,13 @@ Follow my examples (and try) with the extra distribution file TEST.DBF
 INSTALL
 -------
 `
-% VERSION=0.1; 
-% PACKAGE=dbf2txt-$VERSION
-% tar -zxvf $PACKAGE.tar.gz
-% cd $PACKAGE
-% ./configure [1]
-% make 
-$ make install
+    % VERSION=0.1; 
+    % PACKAGE=dbf2txt-$VERSION
+    % tar -zxvf $PACKAGE.tar.gz
+    % cd $PACKAGE
+    % ./configure [1]
+    % make 
+    $ make install
 `
 [1] by default the package will install in:
 /usr/local/bin/dbf2txt [binary]
