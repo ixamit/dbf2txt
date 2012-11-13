@@ -18,19 +18,19 @@ INSTALL
 
 See the options help
 --------------------
-% dbf2txt --help
-Usage: dbf2txt [options]... 
+    % dbf2txt --help
+    Usage: dbf2txt [options]... 
 
- Help and Configuration:
- -h, --help                             Print this help
- Query (SQL Style):
- -d, --desc="ARCHIVE.DBF"               Describe an DBF 
- -s, --select="FIELD..."                Select data field(s)
- -f, --from="ARCHIVE.DBF"               Archive DBF
- -w, --where="CONDITION..."             Condition filter clause
- -o, --order="FIELD..."                 Sort field(s)
- Output (optional plugins):
- -x, --xdump="NAME"                     Dump to plugin output. Use `-x help` for a list of loaded plugins
+    Help and Configuration:
+    -h, --help                             Print this help
+    Query (SQL Style):
+    -d, --desc="ARCHIVE.DBF"               Describe an DBF 
+    -s, --select="FIELD..."                Select data field(s)
+    -f, --from="ARCHIVE.DBF"               Archive DBF
+    -w, --where="CONDITION..."             Condition filter clause
+    -o, --order="FIELD..."                 Sort field(s)
+    Output (optional plugins):
+    -x, --xdump="NAME"                     Dump to plugin output. Use `-x help` for a list of loaded plugins
 Describe TEST.DBF 
 -----------------
 % dbf2txt --desc test.dbf 
