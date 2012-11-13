@@ -5,7 +5,6 @@ Follow my examples (and try) with the extra distribution file TEST.DBF
 
 INSTALL
 -------
-`
     % VERSION=0.1; 
     % PACKAGE=dbf2txt-$VERSION
     % tar -zxvf $PACKAGE.tar.gz
@@ -13,14 +12,12 @@ INSTALL
     % ./configure [1]
     % make 
     $ make install
-`
 [1] by default the package will install in:
 /usr/local/bin/dbf2txt [binary]
 /usr/local/lib/dbf2txt/ [shared & dynamic lib]
 
 See the options help
 --------------------
-`
 % dbf2txt --help
 Usage: dbf2txt [options]... 
 
@@ -34,10 +31,8 @@ Usage: dbf2txt [options]...
  -o, --order="FIELD..."                 Sort field(s)
  Output (optional plugins):
  -x, --xdump="NAME"                     Dump to plugin output. Use `-x help` for a list of loaded plugins
-`
 Describe TEST.DBF 
 -----------------
-`
 % dbf2txt --desc test.dbf 
 +------------------------------------------+
 | DataBase type: 0x03   Update: 2012-10-03 |
@@ -54,7 +49,6 @@ Describe TEST.DBF
 | DES        | C Character |     5 |     0 |
 | PRZ        | N Numeric   |    10 |     2 |
 +------------+-------------+-------+-------+
-`
 Show all fields with no-order
 -----------------------------
 % dbf2txt --from test.dbf
