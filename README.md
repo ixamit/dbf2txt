@@ -230,7 +230,7 @@ Dump other formats with plugins
 
 Writing xyz plugin
 ------------------
-*** MUST Install: autoconf, automake, autotools ***
+**MUST Install: autoconf, automake, autotools**
 
     % cd $PACKAGE
     % vi configure.in
@@ -250,44 +250,44 @@ Writing xyz plugin
     $ make install
 
 your plugin "plugin/xyz.c" MUST HAVE:
-* all #Include *.h as plugin/foo.c
-* function plug_init (PLUGIN *foo) like:
-      int plugin_init (PLUGIN *xyz)
-      { 
-        xyz->name="XYZ";
-        xyz->desc="Xor Yeti Zanzibar (XYZ)";
-        xyz->vers="0.1";
+* all include and functions as plugin/foo.c
+	  
+    #include "dump.h"
 
-        return 0;
-      }
-field name should be less 4 uppercase chars 
-field desc is a short description
-field vers is the version 
-* functions XYZ_HEAD, XYZ_TAIL, XYZ_BODY 
-  (Note:the above prefix is refered to field xyz->name not the filename)
-  void XYZ_HEAD (DBF *dbf) 
-  {
-     // Header
-	 int i;
-     FOREACH_SELECT(i)
-     {
-        printf ("%s\n",DBFIELD_NAME(i));
-     }
-  }
-  void XYZ_TAIL (DBF *dbf) 
-  {
-     // TAIL
-  }
-  void XYZ_BODY (DBF *dbf,int RecNumber)
-  {
-     // BODY
-     int i;
-     FOREACH_SELECT(i)
-     {
-        DBFIELD_LOAD_CONTENTS(i);
-        printf ("%s\n",DBFIELD_CONTENTS);
-     }
-  }
+    int plugin_init (PLUGIN *xyz)
+    { 
+       xyz->name="XYZ";
+       xyz->desc="Xor Yeti Zanzibar (XYZ)";
+       xyz->vers="0.1";
+
+       return 0;
+    }
+
+    void XYZ_HEAD (DBF *dbf) 
+    {
+       // Header
+	   int i;
+       FOREACH_SELECT(i)
+       {
+          printf ("%s\n",DBFIELD_NAME(i));
+       }
+    }
+
+    void XYZ_TAIL (DBF *dbf) 
+    {
+       // TAIL
+    }
+
+    void XYZ_BODY (DBF *dbf,int RecNumber)
+    {
+       // BODY
+       int i;
+       FOREACH_SELECT(i)
+       {
+          DBFIELD_LOAD_CONTENTS(i);
+          printf ("%s\n",DBFIELD_CONTENTS);
+       }
+    }
 
 Bench Test
 ----------
