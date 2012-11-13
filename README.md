@@ -232,37 +232,37 @@ Writing xyz plugin
 ------------------
 *** MUST Install: autoconf, automake, autotools ***
 
-% cd $PACKAGE
-% vi configure.in
-  (add "plugin/xyz/Makefile" to macro AC_OUTPUT)
-% vi plugin/Makefile.am
-  (add xyz to SUBDIRS)
-% cp -R plugin/foo plugin/xyz
-% mv plugin/xyz/foo.c plugin/xyz/xyz.c 
-% vi plugin/xyz/Makefile.am
-  (change any foo to xyz)
-% vi plugin/xyz/xyz.c 
-  (change any FOO to XYZ)
+    % cd $PACKAGE
+    % vi configure.in
+      (add "plugin/xyz/Makefile" to macro AC_OUTPUT)
+    % vi plugin/Makefile.am
+      (add xyz to SUBDIRS)
+    % cp -R plugin/foo plugin/xyz
+    % mv plugin/xyz/foo.c plugin/xyz/xyz.c 
+    % vi plugin/xyz/Makefile.am
+      (change any foo to xyz)
+    % vi plugin/xyz/xyz.c 
+      (change any FOO to XYZ)
 
-% autoreconf
-% make clean
-% make 
-$ make install
+    % autoreconf
+    % make clean
+    % make 
+    $ make install
 
 your plugin "plugin/xyz.c" MUST HAVE:
-* all #nclude *.h as plugin/foo.c
+* all #Include *.h as plugin/foo.c
 * function plug_init (PLUGIN *foo) like:
-  int plugin_init (PLUGIN *xyz)
-  { 
-    xyz->name="XYZ";
-    xyz->desc="Xor Yeti Zanzibar (XYZ)";
-    xyz->vers="0.1";
+      int plugin_init (PLUGIN *xyz)
+      { 
+        xyz->name="XYZ";
+        xyz->desc="Xor Yeti Zanzibar (XYZ)";
+        xyz->vers="0.1";
 
-    return 0;
-  }
-  field name should be less 4 uppercase chars 
-  field desc is a short description
-  field vers is the version 
+        return 0;
+      }
+field name should be less 4 uppercase chars 
+field desc is a short description
+field vers is the version 
 * functions XYZ_HEAD, XYZ_TAIL, XYZ_BODY 
   (Note:the above prefix is refered to field xyz->name not the filename)
   void XYZ_HEAD (DBF *dbf) 
