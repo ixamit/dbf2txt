@@ -134,7 +134,10 @@ void SQL_BODY (DBF *dbf, ui32 RecNumber)
 		DBFIELD_LOAD_CONTENTS(i);
     
 		if (DBFIELD_ISNUMERIC(i))
-			printf ("%s",DBFIELD_CONTENTS);
+            if (strlen(DBFIELD_CONTENTS))
+			    printf ("%s",DBFIELD_CONTENTS);
+            else
+                printf ("0");
 		else
 		{
 			purify (DBFIELD_CONTENTS);
