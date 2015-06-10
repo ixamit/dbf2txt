@@ -82,7 +82,8 @@ if $install; then
     # clone foo plugin to the new plugin 
     if ! $as_directory; then
         echo 'cloning foo plugin'
-        cp -R plugin/"$foo_plugin" plugin/"$plugin"
+        mkdir plugin/"$plugin"
+        find plugin/"$foo_plugin" -type f ! -name Makefile.in -exec cp {} plugin/"$plugin" \;
         mv plugin/"$plugin/$foo_plugin.c" plugin/"$plugin/$plugin.c"
         sed -i "s/$foo_plugin_upper/$plugin_upper/Ig" plugin/"$plugin/$plugin.c"
         sed -i "s/$foo_plugin/$plugin/g" plugin/"$plugin"/Makefile.am
@@ -111,7 +112,7 @@ if $remove; then
         sed -i "/plugin\/$plugin\/Makefile/d" configure.in 
     fi
     if $as_directory; then
-        echo "the directory ../plugin/$plugin" exist. You can remove it manually
+        echo "the directory plugin/$plugin" exist. You can remove it manually
     fi
 fi
 cd "$dir_sav"

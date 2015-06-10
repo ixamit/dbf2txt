@@ -51,7 +51,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = plugin/sql
+subdir = plugin/bar
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
@@ -90,11 +90,11 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(pkglibdir)"
 LTLIBRARIES = $(pkglib_LTLIBRARIES)
-sql_la_LIBADD =
-am_sql_la_OBJECTS = sql.lo
-sql_la_OBJECTS = $(am_sql_la_OBJECTS)
-sql_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(sql_la_LDFLAGS) \
+bar_la_LIBADD =
+am_bar_la_OBJECTS = bar.lo
+bar_la_OBJECTS = $(am_bar_la_OBJECTS)
+bar_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(bar_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -109,8 +109,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(sql_la_SOURCES)
-DIST_SOURCES = $(sql_la_SOURCES)
+SOURCES = $(bar_la_SOURCES)
+DIST_SOURCES = $(bar_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -233,9 +233,9 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/plugin -I$(top_srcdir)/common -I$(top_srcdir)/lib
-pkglib_LTLIBRARIES = sql.la
-sql_la_SOURCES = sql.c
-sql_la_LDFLAGS = -module 
+pkglib_LTLIBRARIES = bar.la
+bar_la_SOURCES = bar.c
+bar_la_LDFLAGS = -module 
 all: all-am
 
 .SUFFIXES:
@@ -249,9 +249,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu plugin/sql/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu plugin/bar/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu plugin/sql/Makefile
+	  $(AUTOMAKE) --gnu plugin/bar/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -302,8 +302,8 @@ clean-pkglibLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-sql.la: $(sql_la_OBJECTS) $(sql_la_DEPENDENCIES) $(EXTRA_sql_la_DEPENDENCIES) 
-	$(sql_la_LINK) -rpath $(pkglibdir) $(sql_la_OBJECTS) $(sql_la_LIBADD) $(LIBS)
+bar.la: $(bar_la_OBJECTS) $(bar_la_DEPENDENCIES) $(EXTRA_bar_la_DEPENDENCIES) 
+	$(bar_la_LINK) -rpath $(pkglibdir) $(bar_la_OBJECTS) $(bar_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -311,7 +311,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sql.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bar.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
