@@ -24,9 +24,9 @@
 #include <locale.h>
 #include "xdump.h"
 
-extern int CSV_SEPARATOR=',';
-extern int CSV_DECIMAL_POINT='.';
-extern int DECIMAL_POINT_CHANGED=0;
+extern int CSV_SEPARATOR;
+extern int CSV_DECIMAL_POINT;
+extern int DECIMAL_POINT_CHANGED;
 
 char *change_decimal_point (char *value)
 {
@@ -49,6 +49,9 @@ int plugin_init (PLUGIN *CSV)
 void CSV_HEAD (DBF *dbf)
 {
 	struct lconv *plconv;
+    CSV_SEPARATOR=',';
+    CSV_DECIMAL_POINT='.';
+    DECIMAL_POINT_CHANGED=0;
 	setlocale(LC_ALL,"");
 	plconv=localeconv ();
 	CSV_DECIMAL_POINT=(int) *plconv->decimal_point;
