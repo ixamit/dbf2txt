@@ -42,4 +42,7 @@ typedef struct dbf
   void (*dbf_dump_TAIL) (struct dbf *);  //  :::
 
 }DBF;
-
+int dbf_init (DBF **dbf, char *filename);
+void dbf_end (DBF *dbf);
+void dbf_show_infofields (DBF *dbf);
+int dbf_show_records (DBF *dbf);

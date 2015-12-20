@@ -24,6 +24,7 @@
 #include <dlfcn.h>
 
 #include "mem.h"
+#include "util.h"
 #include "plugin.h"
 
 void show_plugin_list (LIST_PLUGIN *head)

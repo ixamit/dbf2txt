@@ -30,4 +30,4 @@ typedef struct _list_plugin
 void free_all_plugins (LIST_PLUGIN *head);
 int load_all_plugins (LIST_PLUGIN **head);
 LIST_PLUGIN *search_plugin (LIST_PLUGIN *head, const char *name);
-
+void show_plugin_list (LIST_PLUGIN *head);
