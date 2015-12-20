@@ -232,7 +232,7 @@ int dbf_show_records (DBF *dbf)
   CONDITION *p;
   
   char cmd[256];
-  char tmpname [L_tmpnam];
+  char tmpname [L_tmpnam]="/tmp/dbf2txt-XXXXXX";
   FILE *fp;
   
   /* Set var_id */
