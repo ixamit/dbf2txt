@@ -256,7 +256,11 @@ int dbf_show_records (DBF *dbf)
     return err;
 
 
-  tmpnam (tmpname);
+  if ((mkstemp(tmpname))<0)
+  {
+    perror ("mkstemp");
+    return -1;
+  }
   if ((fp=fopen (tmpname,"w"))==NULL)
   {
     printf ("Cannot open `%s`\n",tmpname);
