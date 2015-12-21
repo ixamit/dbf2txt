@@ -24,14 +24,14 @@
 #include <locale.h>
 #include "xdump.h"
 
-extern int CSV_SEPARATOR;
-extern int CSV_DECIMAL_POINT;
-extern int DECIMAL_POINT_CHANGED;
+int CSV_SEPARATOR;
+int CSV_DECIMAL_POINT;
+int DECIMAL_POINT_CHANGED;
 
 char *change_decimal_point (char *value)
 {
 	char *p;
-	if (!value) return;
+	if (!value) return 0;
 	if ((p=strchr(value,'.')))
 		*p=(char)CSV_DECIMAL_POINT;
 	return value;
